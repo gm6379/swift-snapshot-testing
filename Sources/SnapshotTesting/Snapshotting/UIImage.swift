@@ -4,14 +4,14 @@ import XCTest
 
 extension Diffing where Value == UIImage {
   /// A pixel-diffing strategy for UIImage's which requires a 100% match.
-  public static let image = Diffing.image(precision: 1, compressionQuality: 1.0, scale: nil)
+  public static let image = Diffing.image(precision: 1, scale: nil)
 
   /// A pixel-diffing strategy for UIImage that allows customizing how precise the matching must be.
   ///
   /// - Parameter precision: A value between 0 and 1, where 1 means the images must match 100% of their pixels.
   /// - Parameter scale: Scale to use when loading the reference image from disk. If `nil` or the `UITraitCollection`s default value of `0.0`, the screens scale is used.
   /// - Returns: A new diffing strategy.
-  public static func image(precision: Float, compressionQuality: CGFloat, scale: CGFloat?) -> Diffing {
+  public static func image(precision: Float, compressionQuality: CGFloat = 1.0, scale: CGFloat?) -> Diffing {
     let imageScale: CGFloat
     if let scale = scale, scale != 0.0 {
       imageScale = scale
@@ -23,7 +23,7 @@ extension Diffing where Value == UIImage {
       toData: { $0.jpegData(compressionQuality: 1.0) ?? emptyImage().jpegData(compressionQuality: 1.0)! },
       fromData: { UIImage(data: $0, scale: imageScale)! }
     ) { old, new in
-      guard !compare(old, new, precision: precision) else { return nil }
+      guard !compare(old, new, precision: precision, compressionQuality: compressionQuality) else { return nil }
       let difference = SnapshotTesting.diff(old, new)
       let message = new.size == old.size
         ? "Newly-taken snapshot does not match reference."

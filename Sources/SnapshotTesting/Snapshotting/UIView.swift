@@ -17,12 +17,13 @@ extension Snapshotting where Value == UIView, Format == UIImage {
   public static func image(
     drawHierarchyInKeyWindow: Bool = false,
     precision: Float = 1,
+    compressionQuality: CGFloat = 1.0,
     size: CGSize? = nil,
     traits: UITraitCollection = .init()
     )
     -> Snapshotting {
 
-      return SimplySnapshotting.image(precision: precision, scale: traits.displayScale).asyncPullback { view in
+    return SimplySnapshotting.image(precision: precision, compressionQuality: compressionQuality, scale: traits.displayScale).asyncPullback { view in
         snapshotView(
           config: .init(safeArea: .zero, size: size ?? view.frame.size, traits: .init()),
           drawHierarchyInKeyWindow: drawHierarchyInKeyWindow,
