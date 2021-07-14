@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
   s.name = "SnapshotTesting"
-  s.version = "1.9.0"
-  s.summary = "Tests that save and assert against reference data"
+  s.version = "1.9.0.1"
+  s.summary = "Updated to use JPEG rather than PNG"
 
   s.description = <<-DESC
   Automatically record app data into test assertions. Snapshot tests capture
