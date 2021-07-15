@@ -20,7 +20,7 @@ extension Diffing where Value == UIImage {
     }
 
     return Diffing(
-      toData: { $0.jpegData(compressionQuality: 1.0) ?? emptyImage().jpegData(compressionQuality: 1.0)! },
+      toData: { $0.jpegData(compressionQuality: compressionQuality) ?? emptyImage().jpegData(compressionQuality: compressionQuality)! },
       fromData: { UIImage(data: $0, scale: imageScale)! }
     ) { old, new in
       guard !compare(old, new, precision: precision, compressionQuality: compressionQuality) else { return nil }
@@ -66,7 +66,7 @@ extension Snapshotting where Value == UIImage, Format == UIImage {
   public static func image(precision: Float, compressionQuality: CGFloat, scale: CGFloat?) -> Snapshotting {
     return .init(
       pathExtension: "jpg",
-      diffing: .image(precision: precision, compressionQuality: 1.0, scale: scale)
+      diffing: .image(precision: precision, compressionQuality: compressionQuality, scale: scale)
     )
   }
 }
